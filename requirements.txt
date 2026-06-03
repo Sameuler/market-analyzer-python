@@ -1,2 +1,4 @@
 yfinance
 mysql-connector-python
+pandas
+time
