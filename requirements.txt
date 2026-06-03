@@ -1,1 +1,2 @@
+yfinance
 mysql-connector-python
