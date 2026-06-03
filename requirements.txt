@@ -2,3 +2,5 @@ yfinance
 mysql-connector-python
 pandas
 time
+streamlit
+plotly
