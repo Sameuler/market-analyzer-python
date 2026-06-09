@@ -42,6 +42,23 @@ if selected_ticker== "All Tickers":
 else:
     chart_df=df[df['ticker_symbol']==selected_ticker]
 
+if selected_ticker!="All Tickers":
+    metrics_df=chart_df
+    if not metrics_df.empty:
+        initial_price= float(metrics_df['price'].iloc[0])
+        latest_price=float(metrics_df['price'].iloc[-1])
+        if len(metrics_df)>1 and initial_price>0:
+            pct_change=(latest_price-initial_price)/initial_price*100
+            delta_str= f"{pct_change:.2f}%"
+        else:
+            delta_str="Awaiting Data..."
+        st.metric(
+            label=f"Current Price: {selected_ticker}",
+            value=f"${latest_price:.2f}",
+            delta=delta_str
+        )
+else:
+    st.info("**No Stocks Selected:** Select a ticker from the dropdown to get individual performance metrics")
 
 fig=px.line(
     chart_df,
