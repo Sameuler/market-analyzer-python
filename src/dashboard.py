@@ -30,25 +30,25 @@ df_sorted=df.sort_values(by="date_time")
 
 st.subheader("Portfolio Performance Metrics")
 
-unique_tickers =df_sorted['ticker_symbol'].unique()
-cols=st.columns(len(unique_tickers))
-for col, ticker in zip(cols, unique_tickers):
-    ticker_df=df[df['ticker_symbol']==ticker].sort_values(by="date_time")
-    if not ticker_df.empty:
-        initial_price=ticker_df['price'].iloc[0]
-        latest_price=ticker_df['price'].iloc[-1]
-        pct_change=(latest_price-initial_price)/initial_price
-        col.metric(
-            label=ticker,
-            value=f"${latest_price:.2f}",
-            delta=f"${pct_change:+.2f}"
-        )
+dropdown_tickers =["All Tickers"]+list(df_sorted['ticker_symbol'].unique())
+
+selected_ticker = st.selectbox(
+    label="Select a stock:",
+    options=dropdown_tickers,
+    index=0
+)
+if selected_ticker== "All Tickers":
+    chart_df=df_sorted
+else:
+    chart_df=df[df['ticker_symbol']==selected_ticker]
+
+
 fig=px.line(
-    df,
+    chart_df,
     x="date_time",
     y="price",
     color="ticker_symbol",
-    title="Intraday Prices",
+    title=f"Market Prices {selected_ticker}",
     labels={
         "date_time": "Date",
         "price": "Price",
